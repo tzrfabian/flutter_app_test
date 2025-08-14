@@ -4,9 +4,6 @@ import 'user_info_dialog.dart';
 class UserInfoForm extends StatefulWidget {
   const UserInfoForm({super.key});
 
-  // This widget is the root of the User Information Form.
-  // It contains a form with fields for name, age, and job, and buttons to submit or clear the form.
-  // The form uses a GlobalKey to manage its state and validate inputs.
   @override
   State<UserInfoForm> createState() => _UserInfoFormState();
 }
@@ -17,7 +14,6 @@ class _UserInfoFormState extends State<UserInfoForm> {
   final TextEditingController _jobController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  // Dispose the controllers to free up resources
   @override
   void dispose() {
     _nameController.dispose();
@@ -50,10 +46,10 @@ class _UserInfoFormState extends State<UserInfoForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Form( // Create a form widget
+    return Form(
       key: _formKey,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch, // Align children to stretch the width of the form
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const Text(
             'Please enter your information:',
