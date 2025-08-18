@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_test/features/user_info/widgets/image_slider.dart';
 import '../../routes/app_routes.dart';
 
 class HomePage extends StatelessWidget {
@@ -17,72 +18,40 @@ class HomePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text(
-              'Welcome to the Home Page!',
+              'Welcome to Flutter App Template!',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 32),
 
-            _buildNavigationButton(
-              context,
-              'User Information Form',
-              AppRoutes.userInfo,
-              Icons.person_add,
-              Colors.blue,
-            ),
-            const SizedBox(height: 16),
+            const ImageSlider(),
 
-            _buildNavigationButton(
-              context,
-              'Profile',
-              AppRoutes.profile,
-              Icons.account_circle,
-              Colors.green,
-            ),
-            const SizedBox(height: 16),
-
-            _buildNavigationButton(
-              context,
-              'Settings',
-              AppRoutes.settings,
-              Icons.settings,
-              Colors.orange,
-            ),
-            const SizedBox(height: 16),
-
-            _buildNavigationButton(
-              context,
-              'About',
-              AppRoutes.about,
-              Icons.info,
-              Colors.purple,
-            ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 32),
           ],
         ),
       ),
     );
   }
-  Widget _buildNavigationButton(
-    BuildContext context,
-    String title,
-    String route,
-    IconData icon,
-    Color color
-  ) {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton.icon(
-        onPressed: () => Navigator.pushNamed(context, route),
-        icon: Icon(icon),
-        label: Text(title),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: color,
-          foregroundColor: Colors.white,
-          padding: const EdgeInsets.symmetric(vertical: 16.0),
-          textStyle: const TextStyle(fontSize: 18),
-        ),
-      ),
-    );
-  }
+
+  // Widget _buildQuickActionButton(
+  //   BuildContext context,
+  //   String label,
+  //   IconData icon,
+  //   String route,
+  // ) {
+  //   return Column(
+  //     children: [
+  //       IconButton(
+  //         onPressed: () => Navigator.pushNamed(context, route),
+  //         icon: Icon(icon, size: 32),
+  //         style: IconButton.styleFrom(
+  //           backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+  //           padding: const EdgeInsets.all(16),
+  //         ),
+  //       ),
+  //       const SizedBox(height: 4),
+  //       Text(label, style: const TextStyle(fontSize: 12)),
+  //     ],
+  //   );
+  // }
 }

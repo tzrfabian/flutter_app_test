@@ -18,10 +18,10 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.deepPurple,
         ),
-        useMaterial3: true,
+        useMaterial3: true, // Enable Material Design 3
       ),
-      home: const MainNavigation(),
-      routes: {
+      home: const MainNavigation(), // Entry point
+      routes: { // Named route mapping
         // AppRoutes.home: (context) => const HomePage(), // if uncomment will cause routes conflict
         AppRoutes.userInfo: (context) => const UserInfoPage(title: 'User Information Form'),
         AppRoutes.profile: (context) => const ProfilePage(),

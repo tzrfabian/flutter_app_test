@@ -14,11 +14,11 @@ class MainNavigation extends StatefulWidget{
 }
 
 class _MainNavigationState extends State<MainNavigation> {
-  int _currentIndex = 0;
+  int _currentIndex = 0; // Tracks which tab is currently selected
 
-  final List<Widget> _pages = [
+  final List<Widget> _pages = [ // list page for each tab
     const HomePage(),
-    const UserInfoPage(title: 'User Info Form'),
+    const UserInfoPage(title: 'User Information Form'),
     const ProfilePage(),
     const SettingsPage(),
     const AboutPage(),

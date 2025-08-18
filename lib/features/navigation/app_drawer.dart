@@ -83,7 +83,7 @@ class AppDrawer extends StatelessWidget {
       title: Text(title),
       onTap: () {
         Navigator.pop(context); // Close the drawer
-        Navigator.of(context).pushNamed(route);
+        Navigator.of(context).pushNamed(route); // Navigate to page
       },
     );
   }

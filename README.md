@@ -10,6 +10,8 @@ This project serves as a comprehensive template workspace for Flutter app develo
 
 - **Navigation System**: Bottom navigation bar with 5 main sections
 - **Feature-based Architecture**: Organized code structure following clean architecture principles
+- **Image Slider Component**: Auto-sliding carousel with manual navigation and indicators
+- **JSON Data Mapping**: Demonstrates JSON to Dart object conversion with proper error handling
 - **User Information Form**: Complete form with validation and dialog popup
 - **Material Design 3**: Modern theming with consistent design language
 - **Cross-platform Support**: Android, iOS, Web, Windows, macOS, Linux
@@ -56,6 +58,8 @@ flutter build windows    # Windows
 lib/
 ├── main.dart                    # Main application entry point
 ├── app.dart                     # App configuration and routing
+├── sample/                      # Sample data and configurations
+│   └── img_carousel_data.dart   # JSON data for image carousel
 └── features/                    # Feature-based organization
     ├── navigation/              # Navigation components
     │   ├── main_navigation.dart # Bottom navigation bar
@@ -72,7 +76,8 @@ lib/
         │   └── about_page.dart
         └── widgets/             # Feature widgets
             ├── user_info_form.dart
-            └── user_info_dialog.dart
+            ├── user_info_dialog.dart
+            └── image_slider.dart    # Auto-sliding image carousel
 
 test/
 ├── widget_test.dart             # Widget tests
@@ -91,13 +96,23 @@ The app includes multiple navigation patterns:
 ## Features Overview
 
 ### Home Page
-- Welcome screen with quick action buttons
-- Navigation to all main app sections
+- Welcome screen with image slider carousel
+- Auto-sliding images with manual navigation controls
+- Quick action buttons for navigation to main sections
+
+### Image Slider Component
+- **Auto-sliding**: Automatically changes slides every 5 seconds
+- **Manual Navigation**: Left/right arrow buttons and swipe gestures
+- **Page Indicators**: Animated dots showing current slide position
+- **JSON Data Integration**: Loads carousel data from structured JSON
+- **Error Handling**: Graceful fallbacks for loading states and errors
+- **Responsive Design**: Adapts to different screen sizes
 
 ### User Information Form
 - Input validation for name, age, and job fields
 - Dialog popup displaying entered information
 - Form clearing functionality
+- Comprehensive validation with error messages
 
 ### Profile Page
 - User profile display template
@@ -117,6 +132,7 @@ This template provides a solid foundation with:
 
 - **Feature-based Architecture**: Add new features by creating folders under `features/`
 - **Navigation System**: Easily add new pages to bottom navigation or drawer
+- **Image Slider**: Customizable carousel with JSON data support
 - **Form Handling**: Complete form validation examples to build upon
 - **Material Design 3**: Modern theming with customizable color schemes
 - **Cross-platform Build**: Ready for deployment to all Flutter-supported platforms
@@ -128,6 +144,20 @@ This template provides a solid foundation with:
 2. Follow the existing structure: `pages/`, `widgets/`, `models/`, etc.
 3. Add routes to `app_routes.dart` if needed
 4. Update navigation components to include new pages
+
+### Customizing Image Slider
+
+- **Data Source**: Modify `img_carousel_data.dart` to change slide content
+- **Styling**: Update colors, animations, and layout in `image_slider.dart`
+- **Auto-slide Timing**: Adjust delay in the `_startAutoSlide()` method
+- **External Data**: Replace static data with API calls or asset files
+
+### JSON Data Handling
+
+The template demonstrates three approaches for JSON data:
+- **Static Dart Files**: Best for fixed data (current implementation)
+- **Asset Files**: For external JSON files bundled with the app
+- **API Integration**: Ready for dynamic data from web services
 
 ### Customizing Navigation
 
@@ -149,9 +179,29 @@ If this is your first Flutter project, here are some helpful resources:
 
 - Uses `IndexedStack` in bottom navigation to preserve page state
 - Implements clean separation between navigation and business logic
+- **Image Slider**: Built with `PageView` and `PageController` for smooth animations
+- **JSON Mapping**: Demonstrates `fromJson()` factory constructors for type safety
+- **Auto-sliding**: Uses `Future.delayed()` with `mounted` check for memory safety
+- **Error Handling**: Comprehensive error states for network images and data loading
 - Ready for state management solutions (Provider, Riverpod, Bloc, etc.)
 - Prepared for API integration and data persistence
 - Follows Flutter best practices for scalable app development
+
+## Technical Implementation
+
+### Image Slider Features
+- **PageController**: Manages slide transitions and animations
+- **Auto-slide**: Recursive `Future.delayed()` with lifecycle checks
+- **Manual Navigation**: Arrow buttons with smooth `animateToPage()`
+- **Indicators**: Dynamic indicator generation with animation
+- **Image Loading**: Network images with loading and error states
+- **JSON Integration**: Type-safe data mapping with null safety
+
+### Navigation Architecture
+- **Bottom Navigation**: `BottomNavigationBar` with `IndexedStack`
+- **Named Routes**: Centralized routing with `MaterialApp.routes`
+- **Drawer Navigation**: `Drawer` with `ListTile` items
+- **State Preservation**: Pages maintain state during navigation
 
 ## License
 
