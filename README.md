@@ -75,7 +75,9 @@ lib/
         │   ├── settings_page.dart
         │   └── about_page.dart
         └── widgets/             # Feature widgets
+            ├── hamburger_menu.dart # Hamburger Menu
             ├── user_info_form.dart
+            ├── user_info_dialog.dart
             ├── user_info_dialog.dart
             └── image_slider.dart    # Auto-sliding image carousel
 
@@ -92,6 +94,7 @@ The app includes multiple navigation patterns:
 - **App Drawer**: Comprehensive side menu with all available pages
 - **Programmatic Navigation**: Named routes for flexible page transitions
 - **AppBar Actions**: Quick access buttons and overflow menu
+- **Hamburger Button**: Access button for opening the drawer/side menu
 
 ## Features Overview
 
