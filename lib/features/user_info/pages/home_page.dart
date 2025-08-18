@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_test/features/user_info/widgets/hamburger_menu.dart';
 import 'package:flutter_app_test/features/user_info/widgets/image_slider.dart';
 
 class HomePage extends StatelessWidget {
@@ -9,8 +10,18 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Home'),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: Colors.lightBlue,
+        // flexibleSpace: Container(
+        //   decoration: const BoxDecoration(
+        //     gradient: LinearGradient(
+        //       colors: [Colors.lightBlue, Colors.indigoAccent],
+        //       begin: Alignment.topLeft,
+        //       end: Alignment.bottomRight,
+        //     ),
+        //   ),
+        // ),
       ),
+      drawer: const HamburgerMenu(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

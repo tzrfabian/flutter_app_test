@@ -57,7 +57,7 @@ class _ImageSliderState extends State<ImageSlider> {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black26,
+            color: Colors.black38,
             blurRadius: 8,
             offset: const Offset(0, 4),
           ),
@@ -91,7 +91,7 @@ class _ImageSliderState extends State<ImageSlider> {
               ),
             ),
 
-            // Manual navigation arrows
+            // Navigation arrows button
             Positioned(
               left: 8,
               top: 0,
@@ -219,7 +219,7 @@ class _ImageSliderState extends State<ImageSlider> {
       width: _currentImage == index ? 12 : 8,
       height: 8,
       decoration: BoxDecoration(
-        color: _currentImage == index ? Colors.blue : Colors.grey,
+        color: _currentImage == index ? Colors.lightBlue : Colors.grey,
         borderRadius: BorderRadius.circular(4),
       ),
     );
