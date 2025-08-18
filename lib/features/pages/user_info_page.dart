@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_test/features/user_info/widgets/user_info_form.dart';
+import 'package:flutter_app_test/features/widgets/user_info_form.dart';
 
 class UserInfoPage extends StatelessWidget {
   const UserInfoPage({super.key, required this.title});

@@ -1,10 +1,10 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app_test/features/user_info/pages/about_page.dart';
-import 'package:flutter_app_test/features/user_info/pages/home_page.dart';
-import 'package:flutter_app_test/features/user_info/pages/profile_page.dart';
-import 'package:flutter_app_test/features/user_info/pages/settings_page.dart';
-import 'package:flutter_app_test/features/user_info/pages/user_info_page.dart';
+import 'package:flutter_app_test/features/pages/about_page.dart';
+import 'package:flutter_app_test/features/pages/home_page.dart';
+import 'package:flutter_app_test/features/pages/profile_page.dart';
+import 'package:flutter_app_test/features/pages/settings_page.dart';
+import 'package:flutter_app_test/features/pages/user_info_page.dart';
 
 class MainNavigation extends StatefulWidget{
   const MainNavigation({super.key});

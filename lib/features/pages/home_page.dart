@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_test/features/user_info/widgets/hamburger_menu.dart';
-import 'package:flutter_app_test/features/user_info/widgets/image_slider.dart';
+import 'package:flutter_app_test/features/widgets/hamburger_menu.dart';
+import 'package:flutter_app_test/features/widgets/image_slider.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

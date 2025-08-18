@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../sample/img_carousel_data.dart';
+import '../../sample/img_carousel_data.dart';
 
 class ImageSlider extends StatefulWidget {
   const ImageSlider({super.key});

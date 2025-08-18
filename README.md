@@ -9,7 +9,8 @@ This project serves as a comprehensive template workspace for Flutter app develo
 ## Current Features
 
 - **Navigation System**: Bottom navigation bar with 5 main sections
-- **Feature-based Architecture**: Organized code structure following clean architecture principles
+- **Feature-based Architecture**: Organized code structure with separated concerns
+- **Hamburger Menu**: Navigation drawer with gradient header and menu items
 - **Image Slider Component**: Auto-sliding carousel with manual navigation and indicators
 - **JSON Data Mapping**: Demonstrates JSON to Dart object conversion with proper error handling
 - **User Information Form**: Complete form with validation and dialog popup
@@ -67,19 +68,17 @@ lib/
     │   └── main_scaffold.dart   # Reusable scaffold template
     ├── routes/                  # App routing configuration
     │   └── app_routes.dart      # Route definitions
-    └── user_info/               # User information feature
-        ├── pages/               # Feature pages
-        │   ├── home_page.dart
-        │   ├── user_info_page.dart
-        │   ├── profile_page.dart
-        │   ├── settings_page.dart
-        │   └── about_page.dart
-        └── widgets/             # Feature widgets
-            ├── hamburger_menu.dart # Hamburger Menu
-            ├── user_info_form.dart
-            ├── user_info_dialog.dart
-            ├── user_info_dialog.dart
-            └── image_slider.dart    # Auto-sliding image carousel
+    ├── pages/                   # Application pages
+    │   ├── home_page.dart       # Home page with image slider
+    │   ├── user_info_page.dart  # User information form page
+    │   ├── profile_page.dart    # User profile page
+    │   ├── settings_page.dart   # Settings page
+    │   └── about_page.dart      # About page
+    └── widgets/                 # Reusable widgets
+        ├── hamburger_menu.dart  # Navigation drawer/hamburger menu
+        ├── image_slider.dart    # Auto-sliding image carousel
+        ├── user_info_form.dart  # User information form widget
+        └── user_info_dialog.dart # User info display dialog
 
 test/
 ├── widget_test.dart             # Widget tests
@@ -143,10 +142,11 @@ This template provides a solid foundation with:
 
 ### Adding New Features
 
-1. Create a new folder under `features/` for your feature
-2. Follow the existing structure: `pages/`, `widgets/`, `models/`, etc.
-3. Add routes to `app_routes.dart` if needed
-4. Update navigation components to include new pages
+1. Create new widgets in `features/widgets/` for reusable components
+2. Add new pages in `features/pages/` for application screens
+3. Update `features/routes/app_routes.dart` to add new routes
+4. Update navigation components (`main_navigation.dart`, `hamburger_menu.dart`) to include new pages
+5. Follow the existing structure for consistency
 
 ### Customizing Image Slider
 
@@ -164,9 +164,10 @@ The template demonstrates three approaches for JSON data:
 
 ### Customizing Navigation
 
-- **Bottom Navigation**: Edit `main_navigation.dart` to add/modify tabs
-- **Drawer Menu**: Modify `app_drawer.dart` to add new menu items
-- **Routes**: Update `app_routes.dart` for new page routes
+- **Bottom Navigation**: Edit `features/navigation/main_navigation.dart` to add/modify tabs
+- **Hamburger Menu**: Modify `features/widgets/hamburger_menu.dart` to add new menu items
+- **App Drawer**: Update `features/navigation/app_drawer.dart` for additional drawer functionality
+- **Routes**: Update `features/routes/app_routes.dart` for new page routes
 
 Feel free to modify the structure, add new features, or completely rebuild according to your project requirements.
 
