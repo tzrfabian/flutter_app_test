@@ -1,0 +1,51 @@
+// Create: lib/sample/product_data.dart
+const List<Map<String, dynamic>> productData = [
+  {
+    "id": 1,
+    "name": "Wireless Headphones",
+    "price": 99.99,
+    "image": "https://picsum.photos/id/1/300/300",
+    "category": "Electronics",
+    "rating": 4.5,
+  },
+  {
+    "id": 2,
+    "name": "Smart Watch",
+    "price": 199.99,
+    "image": "https://picsum.photos/id/2/300/300",
+    "category": "Electronics",
+    "rating": 4.2,
+  },
+  {
+    "id": 3,
+    "name": "Coffee Maker",
+    "price": 79.99,
+    "image": "https://picsum.photos/id/3/300/300",
+    "category": "Kitchen",
+    "rating": 4.7,
+  },
+  {
+    "id": 4,
+    "name": "Laptop Stand",
+    "price": 49.99,
+    "image": "https://picsum.photos/id/4/300/300",
+    "category": "Office",
+    "rating": 4.3,
+  },
+  {
+    "id": 5,
+    "name": "Bluetooth Speaker",
+    "price": 59.99,
+    "image": "https://picsum.photos/id/5/300/300",
+    "category": "Electronics",
+    "rating": 4.6,
+  },
+  {
+    "id": 6,
+    "name": "Phone Case",
+    "price": 19.99,
+    "image": "https://picsum.photos/id/6/300/300",
+    "category": "Accessories",
+    "rating": 4.1,
+  },
+];

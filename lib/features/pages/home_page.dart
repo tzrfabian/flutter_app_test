@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_test/features/widgets/hamburger_menu.dart';
 import 'package:flutter_app_test/features/widgets/image_slider.dart';
+import 'package:flutter_app_test/features/widgets/simple_product_list.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -35,11 +36,14 @@ class HomePage extends StatelessWidget {
             const SizedBox(height: 32),
 
             const ImageSlider(),
-
+            const SizedBox(height: 32),
+            
+            const SimpleProductList(),
             const SizedBox(height: 32),
           ],
         ),
       ),
+      // Product List
     );
   }
 
