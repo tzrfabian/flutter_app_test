@@ -45,6 +45,12 @@ class AppDrawer extends StatelessWidget {
           ),
           _buildDrawerItem(
             context,
+            icon: Icons.shopping_bag_outlined,
+            title: 'Products',
+            route: AppRoutes.products,
+          ),
+          _buildDrawerItem(
+            context,
             icon: Icons.person_add,
             title: 'User Info',
             route: AppRoutes.userInfo,

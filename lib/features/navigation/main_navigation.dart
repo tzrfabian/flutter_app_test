@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_test/features/pages/about_page.dart';
 import 'package:flutter_app_test/features/pages/home_page.dart';
-import 'package:flutter_app_test/features/pages/profile_page.dart';
+import 'package:flutter_app_test/features/pages/products_page.dart';
 import 'package:flutter_app_test/features/pages/settings_page.dart';
 import 'package:flutter_app_test/features/pages/user_info_page.dart';
 
@@ -18,8 +18,8 @@ class _MainNavigationState extends State<MainNavigation> {
 
   final List<Widget> _pages = [ // list page for each tab
     const HomePage(),
+    const ProductsPage(),
     const UserInfoPage(title: 'User Information Form'),
-    const ProfilePage(),
     const SettingsPage(),
     const AboutPage(),
   ];
@@ -43,8 +43,8 @@ class _MainNavigationState extends State<MainNavigation> {
         unselectedItemColor: Colors.grey,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.shopping_bag_outlined), label: 'Products'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'User Info'),
-          BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: 'Profile'),
           BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),
           BottomNavigationBarItem(icon: Icon(Icons.info), label: 'About'),
         ]
