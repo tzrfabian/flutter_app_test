@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'product_detail_dialog.dart';
+import '../../models/models.dart';
 
 class ProductCardList extends StatelessWidget {
-  final List<Product> products; // List of products to display
+  // "Products" are data from product_sample_data.dart and "products" is the list of product objects
+  final List<Product> products;
   final bool isGridView; // Whether to display products in a grid or list view
   final VoidCallback? onProductTap;
 
@@ -46,6 +49,7 @@ class ProductCardList extends StatelessWidget {
 }
 
 class ProductCard extends StatelessWidget {
+  // "product" is a model class that represents a product
   final Product product;
   final bool isListView;
   final VoidCallback? onTap;
@@ -293,111 +297,6 @@ class ProductCard extends StatelessWidget {
   }
 
   void _showProductDetails(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(product.name),
-          content: SizedBox(
-            width: double.maxFinite,
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.network(
-                      product.image,
-                      height: 200,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                      loadingBuilder: (context, child, loadingProgress) {
-                        if (loadingProgress == null) return child;
-                        return Container(
-                          height: 200,
-                          color: Colors.grey[300],
-                          child: const Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        );
-                      },
-                      errorBuilder: (context, error, stackTrace) {
-                        return Container(
-                          height: 200,
-                          color: Colors.grey[300],
-                          child: const Icon(Icons.error, size: 40),
-                        );
-                      },
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    'Category: ${product.category}',
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    children: [
-                      const Icon(Icons.star, color: Colors.amber, size: 20),
-                      const SizedBox(width: 4),
-                      Text(
-                        '${product.rating} / 5.0',
-                        style: const TextStyle(fontSize: 16),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    '\$${product.price.toStringAsFixed(2)}',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                      color: Colors.green,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Close'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('Added ${product.name} to Cart'),
-                    duration: const Duration(seconds: 2),
-                  ),
-                );
-              },
-              child: const Text('Add to Cart'),
-            ),
-          ],
-        );
-      },
-    );
+    ProductDetailDialog.show(context, product);
   }
-}
-
-class Product {
-  final int id;
-  final String name;
-  final double price;
-  final String image;
-  final String category;
-  final double rating;
-
-  Product({
-    required this.id,
-    required this.name,
-    required this.price,
-    required this.image,
-    required this.category,
-    required this.rating,
-  });
 }

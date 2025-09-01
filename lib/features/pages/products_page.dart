@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_test/features/widgets/hamburger_menu.dart';
 import 'package:flutter_app_test/features/widgets/product_card_list.dart';
+import '../../models/models.dart';
 import '../../sample/product_sample_data.dart';
 
 class ProductsPage extends StatefulWidget {
@@ -11,6 +12,7 @@ class ProductsPage extends StatefulWidget {
 }
 
 class _ProductsPageState extends State<ProductsPage> {
+  // Products are from product_sample_data.dart and define by class Product from models
   List<Product> _products = [];
   List<Product> _filteredProducts = [];
   String _searchQuery = '';
@@ -31,6 +33,7 @@ class _ProductsPageState extends State<ProductsPage> {
 
   void _loadProducts() {
     setState(() {
+      // Map productData from sample data to List<Product>
       _products = productData.map((item) => Product(
         id: item['id'] as int,
         name: item['name'] as String,
@@ -45,9 +48,10 @@ class _ProductsPageState extends State<ProductsPage> {
 
   void _filterProducts() {
     setState(() {
+      // Filter products based on search query and selected category
       _filteredProducts = _products.where((product) {
         final matchesSearch = product.name.toLowerCase().contains(_searchQuery.toLowerCase()) ||
-                            product.category.toLowerCase().contains(_searchQuery.toLowerCase());
+          product.category.toLowerCase().contains(_searchQuery.toLowerCase());
         final matchesCategory = _selectedCategory == 'All' || product.category == _selectedCategory;
         return matchesSearch && matchesCategory;
       }).toList();
@@ -55,6 +59,7 @@ class _ProductsPageState extends State<ProductsPage> {
   }
 
   void _onSearchChanged(String query) {
+    // Update search query
     setState(() {
       _searchQuery = query;
     });
@@ -62,6 +67,7 @@ class _ProductsPageState extends State<ProductsPage> {
   }
 
   void _onCategoryChanged(String category) {
+    // Update selected category
     setState(() {
       _selectedCategory = category;
     });
@@ -69,6 +75,7 @@ class _ProductsPageState extends State<ProductsPage> {
   }
 
   List<String> _getCategories() {
+    // Get unique categories name from products
     final categories = _products.map((product) => product.category).toSet().toList();
     categories.sort();
     return ['All', ...categories];
@@ -89,7 +96,7 @@ class _ProductsPageState extends State<ProductsPage> {
           Container(
             padding: const EdgeInsets.all(16.0),
             decoration: BoxDecoration(
-              color: Colors.lightBlue.withOpacity(0.1),
+              color: Colors.blue[100],
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withOpacity(0.05),
@@ -151,8 +158,8 @@ class _ProductsPageState extends State<ProductsPage> {
                                     _onCategoryChanged(category);
                                   }
                                 },
-                                selectedColor: Colors.lightBlue.withOpacity(0.2),
-                                checkmarkColor: Colors.lightBlue,
+                                selectedColor: Colors.lightBlue[200],
+                                checkmarkColor: Colors.lightBlue[700],
                               ),
                             );
                           }).toList(),
