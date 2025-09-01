@@ -10,9 +10,13 @@ This project serves as a comprehensive template workspace for Flutter app develo
 
 - **Navigation System**: Bottom navigation bar with 5 main sections
 - **Feature-based Architecture**: Organized code structure with separated concerns
+- **Data Models**: Centralized Product model with clean separation
 - **Hamburger Menu**: Navigation drawer with gradient header and menu items
 - **Image Slider Component**: Auto-sliding carousel with manual navigation and indicators
-- **Product List Component**: Horizontal scrolling product showcase with interactive cards
+- **Product Management**: Comprehensive product listing, search, and filtering
+- **Product Card Components**: Reusable product cards with grid and list view options
+- **Product Detail Dialog**: Enhanced modal with detailed product information
+- **Featured Product List**: Horizontal scrolling product showcase with interactive cards
 - **JSON Data Mapping**: Demonstrates JSON to Dart object conversion with proper error handling
 - **User Information Form**: Complete form with validation and dialog popup
 - **Material Design 3**: Modern theming with consistent design language
@@ -60,18 +64,20 @@ flutter build windows    # Windows
 lib/
 ├── main.dart                      # Main application entry point
 ├── app.dart                       # App configuration and routing
+├── models/                        # Data models
+│   ├── models.dart                # Barrel export for models
+│   └── product.dart               # Product data model
 ├── sample/                        # Sample data and configurations
 │   ├── img_carousel_data.dart     # JSON data for image carousel
 │   └── product_sample_data.dart   # JSON data for product showcase
 └── features/                      # Feature-based organization
     ├── navigation/                # Navigation components
-    │   ├── main_navigation.dart   # Bottom navigation bar
-    │   ├── app_drawer.dart        # Navigation drawer
-    │   └── main_scaffold.dart     # Reusable scaffold template
+    │   └── main_navigation.dart   # Bottom navigation bar
     ├── routes/                    # App routing configuration
     │   └── app_routes.dart        # Route definitions
     ├── pages/                     # Application pages
     │   ├── home_page.dart         # Home page with image slider & product list
+    │   ├── products_page.dart     # Products page with search and filtering
     │   ├── user_info_page.dart    # User information form page
     │   ├── profile_page.dart      # User profile page
     │   ├── settings_page.dart     # Settings page
@@ -79,7 +85,9 @@ lib/
     └── widgets/                   # Reusable widgets
         ├── hamburger_menu.dart    # Navigation drawer/hamburger menu
         ├── image_slider.dart      # Auto-sliding image carousel
-        ├── simple_product_list.dart # Horizontal product list widget
+        ├── featured_product_list.dart # Horizontal featured product list
+        ├── product_card_list.dart # Reusable product card grid/list widget
+        ├── product_detail_dialog.dart # Product detail modal dialog
         ├── user_info_form.dart    # User information form widget
         └── user_info_dialog.dart  # User info display dialog
 
@@ -103,8 +111,37 @@ The app includes multiple navigation patterns:
 ### Home Page
 - Welcome screen with image slider carousel
 - Auto-sliding images with manual navigation controls
-- Horizontal product list with interactive product cards
+- Horizontal featured product list with interactive product cards
 - Quick action buttons for navigation to main sections
+
+### Products Page
+- **Comprehensive Product Listing**: Grid view of all products with search and filtering
+- **Real-time Search**: Search products by name or category with instant results
+- **Category Filtering**: Dynamic category chips for easy product filtering
+- **Product Count & Total**: Display of filtered product count and total price
+- **Empty State Handling**: Helpful messages when no products match filters
+- **Responsive Grid Layout**: 2-column grid optimized for mobile viewing
+
+### Product Components
+
+#### Product Card List Widget
+- **Flexible Display**: Supports both grid and list view layouts
+- **Reusable Component**: Can be used across different pages and contexts
+- **Interactive Cards**: Tap to view detailed product information
+- **Loading States**: Proper loading indicators and error handling
+- **Consistent Styling**: Material Design cards with elevation and rounded corners
+
+#### Product Detail Dialog
+- **Comprehensive Product View**: Large product image with detailed information
+- **Enhanced Layout**: Organized display of category, rating, and price
+- **Interactive Elements**: Add to Cart functionality with user feedback
+- **Icon-based Information**: Clear visual hierarchy with descriptive icons
+- **Responsive Design**: Proper constraints for different screen sizes
+
+#### Featured Product List
+- **Horizontal Scrolling**: Smooth swipe navigation through featured products
+- **Limited Selection**: Showcases top 5 products on home page
+- **Quick Access**: Direct navigation to product details from home
 
 ### Image Slider Component
 - **Auto-sliding**: Automatically changes slides every 5 seconds
@@ -113,14 +150,6 @@ The app includes multiple navigation patterns:
 - **JSON Data Integration**: Loads carousel data from structured JSON
 - **Error Handling**: Graceful fallbacks for loading states and errors
 - **Responsive Design**: Adapts to different screen sizes
-
-### Product List Component
-- **Horizontal Scrolling**: Smooth swipe navigation through products
-- **Interactive Cards**: Tap to view detailed product information
-- **Product Details Dialog**: Modal popup with product image, category, rating, and price
-- **Add to Cart**: Simulated cart functionality with user feedback
-- **Error Handling**: Loading states and error fallbacks for product images
-- **JSON Data Integration**: Loads product data from structured JSON file
 
 ### User Information Form
 - Input validation for name, age, and job fields
@@ -161,20 +190,21 @@ This template provides a solid foundation with:
 4. Update navigation components (`main_navigation.dart`, `hamburger_menu.dart`) to include new pages
 5. Follow the existing structure for consistency
 
+### Customizing Product Components
+
+- **Product Model**: Modify `models/product.dart` to add new properties
+- **Product Cards**: Update `product_card_list.dart` for different layouts or styling
+- **Product Details**: Customize `product_detail_dialog.dart` for enhanced product information
+- **Search & Filter**: Extend filtering logic in `products_page.dart` for advanced criteria
+- **Featured Products**: Adjust selection logic in `featured_product_list.dart`
+- **Data Source**: Replace static data with API calls or database integration
+
 ### Customizing Image Slider
 
 - **Data Source**: Modify `img_carousel_data.dart` to change slide content
 - **Styling**: Update colors, animations, and layout in `image_slider.dart`
 - **Auto-slide Timing**: Adjust delay in the `_startAutoSlide()` method
 - **External Data**: Replace static data with API calls or asset files
-
-### Customizing Product List
-
-- **Data Source**: Modify `product_sample_data.dart` to change product content
-- **Card Design**: Update styling and layout in `simple_product_list.dart`
-- **Dialog Behavior**: Customize product detail popup and interactions
-- **Add to Cart Logic**: Implement actual cart functionality
-- **External Data**: Replace static data with API calls or database integration
 
 ### JSON Data Handling
 
@@ -216,6 +246,30 @@ If this is your first Flutter project, here are some helpful resources:
 
 ## Technical Implementation
 
+### Data Models Architecture
+- **Centralized Models**: Product model in dedicated `models/` directory
+- **Barrel Exports**: Clean imports using `models.dart` barrel file
+- **Simple Data Structures**: Focused models without unnecessary complexity
+- **Type Safety**: Proper typing for all product properties
+
+### Product Management System
+- **Reusable Components**: Product cards can be used in grid or list layouts
+- **Search & Filter Logic**: Real-time filtering with category and text search
+- **State Management**: Proper state handling for search queries and filtered results
+- **Dynamic Categories**: Auto-generated category filters from product data
+
+### Product Card Architecture
+- **Flexible Layout**: Single component supports both grid and list views
+- **Tap Handling**: Configurable tap actions with fallback to detail dialog
+- **Image Optimization**: Network image loading with proper error states
+- **Material Design**: Consistent elevation, shadows, and border radius
+
+### Product Detail Dialog
+- **Modal Presentation**: Full-screen dialog with scrollable content
+- **Enhanced UX**: Icon-based information display with proper visual hierarchy
+- **Action Integration**: Add to Cart with snackbar feedback
+- **Static Helper Method**: Easy dialog presentation with `ProductDetailDialog.show()`
+
 ### Image Slider Features
 - **PageController**: Manages slide transitions and animations
 - **Auto-slide**: Recursive `Future.delayed()` with lifecycle checks
@@ -223,14 +277,6 @@ If this is your first Flutter project, here are some helpful resources:
 - **Indicators**: Dynamic indicator generation with animation
 - **Image Loading**: Network images with loading and error states
 - **JSON Integration**: Type-safe data mapping with null safety
-
-### Product List Features
-- **Horizontal Scrolling**: `ListView.builder` with `Axis.horizontal`
-- **Product Cards**: Material Design cards with proper elevation and shadows
-- **Image Handling**: Network images with loading indicators and error fallbacks
-- **Dialog Popups**: `AlertDialog` with proper constraint handling using `SizedBox`
-- **User Interactions**: Tap gestures, snackbar feedback, and navigation
-- **Data Models**: Type-safe Product class with JSON serialization
 
 ### Navigation Architecture
 - **Bottom Navigation**: `BottomNavigationBar` with `IndexedStack`
