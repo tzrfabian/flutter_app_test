@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import '../../models/models.dart';
 import '../../sample/product_sample_data.dart';
 
-class SimpleProductList extends StatelessWidget {
-  const SimpleProductList({super.key});
+class FeaturedProductList extends StatelessWidget {
+  const FeaturedProductList({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +14,9 @@ class SimpleProductList extends StatelessWidget {
       image: item['image'] as String,
       category: item['category'] as String,
       rating: item['rating'] as double,
-    )).toList();
+    ))
+    .take(5)
+    .toList();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -266,24 +269,4 @@ class SimpleProductList extends StatelessWidget {
       },
     );
   }
-}
-
-
-
-class Product {
-  final int id;
-  final String name;
-  final double price;
-  final String image;
-  final String category;
-  final double rating;
-
-  Product({
-    required this.id,
-    required this.name,
-    required this.price,
-    required this.image,
-    required this.category,
-    required this.rating,
-  });
 }
