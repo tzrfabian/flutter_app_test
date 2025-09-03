@@ -25,18 +25,19 @@ class _MainNavigationState extends State<MainNavigation> {
     const AboutPage(),
   ];
 
+  // for switching tabs
   void switchTab(int index) {
     setState(() {
       _currentIndex = index;
     });
   }
-
+  // for initializing
   @override
   void initState() {
     super.initState();
     MainNavigation.tabSwitcher = switchTab;
   }
-
+  // for disposing
   @override
   void dispose() {
     MainNavigation.tabSwitcher = null;

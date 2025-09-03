@@ -51,6 +51,7 @@ class FirebaseApi {
       route = '/about';
     }
 
+    // Determine the tab index based on the route
     int tabIndex = 0;
     switch(route) {
       case '/products':
@@ -69,6 +70,7 @@ class FirebaseApi {
         tabIndex = 0;
     }
 
+    // Check if tabSwitcher is available
     if(MainNavigation.tabSwitcher != null) {
       MainNavigation.tabSwitcher!(tabIndex);
       print('<<<Tab switched to index: $tabIndex>>>');
