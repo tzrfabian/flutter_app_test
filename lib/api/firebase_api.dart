@@ -49,7 +49,6 @@ class FirebaseApi {
     } else if (title.contains('about') || body.contains('about')) {
       route = '/about';
     }
-    
 
     print('<<<Navigating to route: $route>>>');
     print('<<<Notification data: ${message.data}>>>');
