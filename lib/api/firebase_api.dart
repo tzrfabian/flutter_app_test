@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_test/features/navigation/main_navigation.dart';
 import 'package:flutter_app_test/main.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -42,17 +43,41 @@ class FirebaseApi {
       route = '/products';
     } else if (title.contains('profile') || body.contains('profile')) {
       route = '/profile';
-    } else if (title.contains('settings') || body.contains('settings')) {
-      route = '/settings';
     } else if (title.contains('user info') || body.contains('user info')) {
       route = '/user-info';
+    } else if (title.contains('settings') || body.contains('settings')) {
+      route = '/settings';
     } else if (title.contains('about') || body.contains('about')) {
       route = '/about';
     }
 
+    int tabIndex = 0;
+    switch(route) {
+      case '/products':
+        tabIndex = 1;
+        break;
+      case '/user-info':
+        tabIndex = 2;
+        break;
+      case '/settings':
+        tabIndex = 3;
+        break;
+      case '/about':
+        tabIndex = 4;
+        break;
+      default:
+        tabIndex = 0;
+    }
+
+    if(MainNavigation.tabSwitcher != null) {
+      MainNavigation.tabSwitcher!(tabIndex);
+      print('<<<Tab switched to index: $tabIndex>>>');
+    } else {
+      print('<<<Tab switcher is null>>>');
+    }
+
     print('<<<Navigating to route: $route>>>');
     print('<<<Notification data: ${message.data}>>>');
-    navigatorKey.currentState?.pushNamed(route, arguments: message);
   }
 
   // Initialize the local notifications
