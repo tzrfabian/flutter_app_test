@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_app_test/main.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 @pragma('vm:entry-point')
 Future<void> handleBackgroundMessage(RemoteMessage message) async {
@@ -15,7 +17,7 @@ Future<void> handleBackgroundMessage(RemoteMessage message) async {
 class FirebaseApi {
   final _firebaseMessaging = FirebaseMessaging.instance;
 
-  // Initialize the FlutterLocalNotificationsPlugin
+  // Define the Android Notification Channel
   final _androidChannel = const AndroidNotificationChannel(
     'high_importance_channel',
     'High Importance Notifications',
@@ -23,6 +25,7 @@ class FirebaseApi {
     importance: Importance.defaultImportance,
   );
 
+  // Initialize the FlutterLocalNotificationsPlugin
   final _localNotifications = FlutterLocalNotificationsPlugin();
 
   void handleNotif(RemoteMessage? message) {
@@ -33,6 +36,7 @@ class FirebaseApi {
     );
   }
 
+  // Initialize the local notifications
   Future initLocalNotifications() async {
     const iOS = DarwinInitializationSettings();
     const android = AndroidInitializationSettings('@mipmap/ic_launcher');
@@ -51,6 +55,33 @@ class FirebaseApi {
     await platform?.createNotificationChannel(_androidChannel);
   }
 
+  // Add push notif scheduling
+  Future<void> scheduleLocalNotification({
+    required String title,
+    required String body,
+    required DateTime scheduleTime,
+    String? payload,
+  }) async {
+    await _localNotifications.zonedSchedule(
+      // unique notification id,
+      scheduleTime.millisecondsSinceEpoch ~/ 1000,
+      title,
+      body,
+      tz.TZDateTime.from(scheduleTime, tz.local),
+      NotificationDetails(
+        android: AndroidNotificationDetails(
+          _androidChannel.id,
+          _androidChannel.name,
+          channelDescription: _androidChannel.description,
+          icon: '@mipmap/ic_launcher',
+        ),
+      ),
+      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+      payload: payload,
+    );
+  }
+
+  // Initialize push notifications
   Future initPushNotifications() async {
     await FirebaseMessaging.instance
     .setForegroundNotificationPresentationOptions(
@@ -64,8 +95,16 @@ class FirebaseApi {
     FirebaseMessaging.onBackgroundMessage(handleBackgroundMessage);
     FirebaseMessaging.onMessage.listen((message){
       final notifications = message.notification; // Get the notification details
-      // Handle foreground messages
       if(notifications == null) return; // if notifications is null, do nothing
+
+      // Show Snackbar Notif
+      navigatorKey.currentState?.context != null
+        ? ScaffoldMessenger.of(navigatorKey.currentState!.context).showSnackBar(
+            SnackBar(
+              content: Text(notifications.title ?? 'New Notification'),
+            ),
+          )
+        : null;
 
       // Show the notification
       _localNotifications.show(
@@ -77,7 +116,7 @@ class FirebaseApi {
             _androidChannel.id,
             _androidChannel.name,
             channelDescription: _androidChannel.description,
-            icon: '@drawable/ic_launcher',
+            icon: '@mipmap/ic_launcher',
           ),
         ),
         payload: jsonEncode(message.toMap()),
@@ -85,6 +124,7 @@ class FirebaseApi {
     });
   }
 
+  // Initialize push notifications
   Future<void> initNotifications() async {
     await _firebaseMessaging.requestPermission();
     final fCMToken = await _firebaseMessaging.getToken();
