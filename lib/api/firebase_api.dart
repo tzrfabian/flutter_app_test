@@ -30,10 +30,30 @@ class FirebaseApi {
 
   void handleNotif(RemoteMessage? message) {
     if (message == null) return;
-    navigatorKey.currentState?.pushNamed(
-      '/products',
-      arguments: message,
-    );
+
+    // Try to get route from notification data / payload
+    String route = '/';
+    
+    // Fallback: check title/body for route keywords
+    final title = message.notification?.title?.toLowerCase() ?? '';
+    final body = message.notification?.body?.toLowerCase() ?? '';
+
+    if (title.contains('product') || body.contains('product')) {
+      route = '/products';
+    } else if (title.contains('profile') || body.contains('profile')) {
+      route = '/profile';
+    } else if (title.contains('settings') || body.contains('settings')) {
+      route = '/settings';
+    } else if (title.contains('user info') || body.contains('user info')) {
+      route = '/user-info';
+    } else if (title.contains('about') || body.contains('about')) {
+      route = '/about';
+    }
+    
+
+    print('<<<Navigating to route: $route>>>');
+    print('<<<Notification data: ${message.data}>>>');
+    navigatorKey.currentState?.pushNamed(route, arguments: message);
   }
 
   // Initialize the local notifications
@@ -76,9 +96,10 @@ class FirebaseApi {
           icon: '@mipmap/ic_launcher',
         ),
       ),
-      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       payload: payload,
     );
+    print("<<<objective scheduled at $scheduleTime>>>>");
   }
 
   // Initialize push notifications

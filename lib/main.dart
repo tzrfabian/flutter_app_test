@@ -21,11 +21,14 @@ void main() async {
       await Permission.scheduleExactAlarm.request();
     }
   }
+  var status = await Permission.scheduleExactAlarm.status;
+  print('<<<Exact alarm permission status: $status>>>');
+  await FirebaseApi().initNotifications();
+  await FirebaseApi().initLocalNotifications();
   await FirebaseApi().scheduleLocalNotification(
     title: "Scheduled Push Notification", // Title of the notification
     body: "This is a scheduled push notification.", // Body of the notification
-    scheduleTime: DateTime.now().add(Duration(seconds: 30)), // Schedule for 15 seconds later
+    scheduleTime: DateTime.now().add(Duration(seconds: 20)), // Schedule for 20 seconds later
   );
-  await FirebaseApi().initNotifications();
   runApp(const MyApp());
 }
