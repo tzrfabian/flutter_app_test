@@ -27,7 +27,6 @@ class FirebaseApi {
 
   void handleNotif(RemoteMessage? message) {
     if (message == null) return;
-
     navigatorKey.currentState?.pushNamed(
       '/products',
       arguments: message,
@@ -41,14 +40,15 @@ class FirebaseApi {
 
     await _localNotifications.initialize(
       settings,
-      onDidReceiveNotificationResponse: (NotificationResponse notificationResponse) async {
+      onDidReceiveNotificationResponse: (notificationResponse) {
         final payload = notificationResponse.payload;
-        if (payload != null) {
-          final message = RemoteMessage.fromMap(jsonDecode(payload));
-          handleNotif(message);
-        }
+        if (payload == null) return;
+        final message = RemoteMessage.fromMap(jsonDecode(payload));
+        handleNotif(message);
       },
     );
+    final platform = _localNotifications.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
+    await platform?.createNotificationChannel(_androidChannel);
   }
 
   Future initPushNotifications() async {
@@ -90,18 +90,6 @@ class FirebaseApi {
     final fCMToken = await _firebaseMessaging.getToken();
     print('FCM Token: $fCMToken');
     initPushNotifications();
-    // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    //   print('Got a message whilst in the foreground!');
-    //   print('Message data: ${message.data}');
-    //   if(message.notification != null) {
-    //     print('Message also contained a notification: ${message.notification}');
-    //   }
-    // });
-
-    // FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-    //   print('🔥 NOTIFICATION TAPPED 🔥');
-    //   print('Data: ${message.data}');
-    // });
-
+    initLocalNotifications();
   }
 }
