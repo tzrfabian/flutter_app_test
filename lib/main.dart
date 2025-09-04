@@ -5,30 +5,40 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_app_test/api/firebase_api.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:timezone/data/latest.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
 import 'app.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized(); // Ensure Flutter bindings are initialized
-  tz.initializeTimeZones(); // Initialize time zones
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
+  // Request necessary permissions
+  await Permission.notification.request();
+
   if (Platform.isAndroid) {
     final androidInfo = await DeviceInfoPlugin().androidInfo;
     if (androidInfo.version.sdkInt >= 33) {
       await Permission.scheduleExactAlarm.request();
     }
   }
-  var status = await Permission.scheduleExactAlarm.status;
-  print('<<<Exact alarm permission status: $status>>>');
-  await FirebaseApi().initNotifications();
-  await FirebaseApi().initLocalNotifications();
-  await FirebaseApi().scheduleLocalNotification(
-    title: "Scheduled Push Notification", // Title of the notification
-    body: "This is a scheduled push notification.", // Body of the notification
-    scheduleTime: DateTime.now().add(Duration(seconds: 20)), // Schedule for 20 seconds later
+
+  // Initialize Firebase API
+  final firebaseApi = FirebaseApi();
+
+  // Request battery optimization bypass (helps with scheduled notifications)
+  await firebaseApi.requestBatteryOptimizationBypass();
+
+  // Initialize notifications
+  await firebaseApi.initNotifications();
+
+  // Schedule a test notification
+  final scheduleTime = DateTime.now().add(Duration(seconds: 10));
+  await firebaseApi.scheduleLocalNotification(
+    title: "Scheduled Push Notification",
+    body: "This is a scheduled push notification.",
+    scheduleTime: scheduleTime,
   );
+
   runApp(const MyApp());
 }
