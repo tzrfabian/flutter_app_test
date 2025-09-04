@@ -7,6 +7,7 @@ import 'package:flutter_app_test/features/pages/settings_page.dart';
 import 'package:flutter_app_test/features/pages/user_info_page.dart';
 
 class MainNavigation extends StatefulWidget{
+  static void Function(int)? tabSwitcher;
   const MainNavigation({super.key});
 
   @override
@@ -24,6 +25,25 @@ class _MainNavigationState extends State<MainNavigation> {
     const AboutPage(),
   ];
 
+  // for switching tabs
+  void switchTab(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+  // for initializing
+  @override
+  void initState() {
+    super.initState();
+    MainNavigation.tabSwitcher = switchTab;
+  }
+  // for disposing
+  @override
+  void dispose() {
+    MainNavigation.tabSwitcher = null;
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,11 +53,7 @@ class _MainNavigationState extends State<MainNavigation> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
+        onTap: (index) => switchTab(index),
         type: BottomNavigationBarType.fixed,
         selectedItemColor: Colors.blue,
         unselectedItemColor: Colors.grey,
