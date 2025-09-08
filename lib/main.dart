@@ -32,11 +32,12 @@ void main() async {
   // Initialize notifications
   await firebaseApi.initNotifications();
 
+  final currentTime = '${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day} ${DateTime.now().hour}:${DateTime.now().minute}:${DateTime.now().second}';
   // Schedule a test notification
   final scheduleTime = DateTime.now().add(Duration(seconds: 10));
   await firebaseApi.scheduleLocalNotification(
     title: "Scheduled Push Notification",
-    body: "This is a scheduled push notification.",
+    body: "This is a scheduled push notification. Time: $currentTime",
     scheduleTime: scheduleTime,
   );
 
