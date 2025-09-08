@@ -1,18 +1,20 @@
 import 'dart:convert';
+import 'dart:io';
+import 'dart:async';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_test/features/navigation/main_navigation.dart';
 import 'package:flutter_app_test/main.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:timezone/timezone.dart' as tz;
+import 'package:permission_handler/permission_handler.dart';
 
 @pragma('vm:entry-point')
 Future<void> handleBackgroundMessage(RemoteMessage message) async {
-    // Handle background message
-    print("Notif Title: ${message.notification?.title}");
-    print("Notif Body: ${message.notification?.body}");
-    print("Notif Payload: ${message.data}");
+  // Handle background message
+  print("Notif Title: ${message.notification?.title}");
+  print("Notif Body: ${message.notification?.body}");
+  print("Notif Payload: ${message.data}");
 }
 
 class FirebaseApi {
@@ -34,7 +36,7 @@ class FirebaseApi {
 
     // Try to get route from notification data / payload
     String route = '/';
-    
+
     // Fallback: check title/body for route keywords
     final title = message.notification?.title?.toLowerCase() ?? '';
     final body = message.notification?.body?.toLowerCase() ?? '';
@@ -53,7 +55,7 @@ class FirebaseApi {
 
     // Determine the tab index based on the route
     int tabIndex = 0;
-    switch(route) {
+    switch (route) {
       case '/products':
         tabIndex = 1;
         break;
@@ -71,15 +73,10 @@ class FirebaseApi {
     }
 
     // Check if tabSwitcher is available
-    if(MainNavigation.tabSwitcher != null) {
+    if (MainNavigation.tabSwitcher != null) {
       MainNavigation.tabSwitcher!(tabIndex);
-      print('<<<Tab switched to index: $tabIndex>>>');
-    } else {
-      print('<<<Tab switcher is null>>>');
+      print('<<<Tab Switched to: $tabIndex>>>');
     }
-
-    print('<<<Navigating to route: $route>>>');
-    print('<<<Notification data: ${message.data}>>>');
   }
 
   // Initialize the local notifications
@@ -97,61 +94,91 @@ class FirebaseApi {
         handleNotif(message);
       },
     );
-    final platform = _localNotifications.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
+    final platform = _localNotifications
+        .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin
+        >();
     await platform?.createNotificationChannel(_androidChannel);
   }
 
-  // Add push notif scheduling
+  // Schedule local notification using Timer (works reliably)
   Future<void> scheduleLocalNotification({
     required String title,
     required String body,
     required DateTime scheduleTime,
     String? payload,
   }) async {
-    await _localNotifications.zonedSchedule(
-      // unique notification id,
-      scheduleTime.millisecondsSinceEpoch ~/ 1000,
-      title,
-      body,
-      tz.TZDateTime.from(scheduleTime, tz.local),
-      NotificationDetails(
-        android: AndroidNotificationDetails(
-          _androidChannel.id,
-          _androidChannel.name,
-          channelDescription: _androidChannel.description,
-          icon: '@mipmap/ic_launcher',
+    final delay = scheduleTime.difference(DateTime.now());
+    final currentTime = DateTime.now();
+
+    if (delay.inSeconds <= 0) {
+      // If schedule time is in the past, show immediately
+      await _localNotifications.show(
+        currentTime.millisecondsSinceEpoch ~/ 1000,
+        title,
+        body,
+        NotificationDetails(
+          android: AndroidNotificationDetails(
+            _androidChannel.id,
+            _androidChannel.name,
+            channelDescription: _androidChannel.description,
+            icon: '@mipmap/ic_launcher',
+            importance: Importance.high,
+            priority: Priority.high,
+          ),
         ),
-      ),
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-      payload: payload,
-    );
-    print("<<<objective scheduled at $scheduleTime>>>>");
+        payload: payload,
+      );
+      return;
+    }
+
+    // Use Timer for reliable scheduling
+    Timer(delay, () async {
+      await _localNotifications.show(
+        currentTime.millisecondsSinceEpoch ~/ 1000,
+        title,
+        body,
+        NotificationDetails(
+          android: AndroidNotificationDetails(
+            _androidChannel.id,
+            _androidChannel.name,
+            channelDescription: _androidChannel.description,
+            icon: '@mipmap/ic_launcher',
+            importance: Importance.high,
+            priority: Priority.high,
+          ),
+        ),
+        payload: payload,
+      );
+    });
   }
 
   // Initialize push notifications
   Future initPushNotifications() async {
     await FirebaseMessaging.instance
-    .setForegroundNotificationPresentationOptions(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
+        .setForegroundNotificationPresentationOptions(
+          alert: true,
+          badge: true,
+          sound: true,
+        );
 
     FirebaseMessaging.instance.getInitialMessage().then(handleNotif);
     FirebaseMessaging.onMessageOpenedApp.listen(handleNotif);
     FirebaseMessaging.onBackgroundMessage(handleBackgroundMessage);
-    FirebaseMessaging.onMessage.listen((message){
-      final notifications = message.notification; // Get the notification details
-      if(notifications == null) return; // if notifications is null, do nothing
+    FirebaseMessaging.onMessage.listen((message) {
+      final notifications = message.notification;
+      if (notifications == null) return;
 
       // Show Snackbar Notif
       navigatorKey.currentState?.context != null
-        ? ScaffoldMessenger.of(navigatorKey.currentState!.context).showSnackBar(
-            SnackBar(
-              content: Text(notifications.title ?? 'New Notification'),
-            ),
-          )
-        : null;
+          ? ScaffoldMessenger.of(
+              navigatorKey.currentState!.context,
+            ).showSnackBar(
+              SnackBar(
+                content: Text(notifications.title ?? 'New Notification'),
+              ),
+            )
+          : null;
 
       // Show the notification
       _localNotifications.show(
@@ -171,7 +198,18 @@ class FirebaseApi {
     });
   }
 
-  // Initialize push notifications
+  // Request battery optimization bypass
+  Future<void> requestBatteryOptimizationBypass() async {
+    if (Platform.isAndroid) {
+      try {
+        await Permission.ignoreBatteryOptimizations.request();
+      } catch (e) {
+        // Silently handle error - not all devices support this
+      }
+    }
+  }
+
+  // Initialize all notifications
   Future<void> initNotifications() async {
     await _firebaseMessaging.requestPermission();
     final fCMToken = await _firebaseMessaging.getToken();
